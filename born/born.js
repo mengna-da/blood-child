@@ -142,8 +142,8 @@ function init() {
     // controls.maxDistance = 5000;
 
     // STATS
-    stats = new Stats();
-    container.appendChild( stats.dom );
+    // stats = new Stats();
+    // container.appendChild( stats.dom );
 
     // GUI
     // setupGui();
@@ -633,7 +633,7 @@ function updateCubes( object, time, numblobs, floor, wallx, wallz ) {
 function animate() {
 
     render();
-    stats.update();
+    // stats.update();
 
 }
 
