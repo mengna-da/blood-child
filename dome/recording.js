@@ -19,7 +19,7 @@ import {
     getCubeCamera,
     getFisheyeScene,
     getFisheyeCamera
-} from './bornDomeProjection.js';
+} from './domeProjection.js';
 
 // ============================================================================
 // RECORDING SETTINGS

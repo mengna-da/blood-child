@@ -22,8 +22,8 @@ import {
     renderDome, 
     onDomeWindowResize,
     getDomeTargetFPS
-} from './bornDomeProjection.js';
-import { initRecording, captureImageSequenceFrame, isImageSequenceMode } from './bornRecording.js';
+} from '../dome/domeProjection.js';
+import { initRecording, captureImageSequenceFrame, isImageSequenceMode } from '../dome/recording.js';
 import { initScrollAnimations, applyRotation, getCurrentMaterial } from './bornScrollAnimations.js';
 
 // ============================================================================

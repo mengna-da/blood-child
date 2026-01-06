@@ -12,6 +12,26 @@ window.$ = window.jQuery = jQuery; // make jQuery available globally
 import { WheelAdaptor } from 'three-story-controls'; 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+// Dome projection and recording modules
+import { 
+    initDomeProjection, 
+    isDomeMode, 
+    shouldRenderDomeFrame, 
+    renderDome, 
+    onDomeWindowResize,
+    getDomeTargetFPS
+} from '../dome/domeProjection.js';
+import { initRecording, captureImageSequenceFrame, isImageSequenceMode } from '../dome/recording.js';
+
+// 3D Text for dome projection
+import { 
+  setup3DText, 
+  update3DTextPositions, 
+  animate3DTextByPercentage, 
+  animate3DTextByStep,
+  hideAll3DTexts
+} from './unbornTextForDome.js';
+
 // Background sound
 window.addEventListener('scroll', () => {
   // console.log("scrolled");
@@ -97,6 +117,14 @@ composer.setSize(window.innerWidth, window.innerHeight);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
 
+// Initialize dome projection and recording modules
+// (in dome mode, bloom effect is bypassed for proper fisheye rendering)
+initDomeProjection(scene, camera, renderer);
+initRecording(renderer, camera, scene);
+
+// Initialize 3D text for dome projection
+// This hides HTML text and creates 3D text meshes that deform with fisheye
+setup3DText(scene, camera);
 
 //CREATE THE TUBE ===============================================
 //array of points
@@ -222,10 +250,10 @@ var light = new THREE.PointLight(0xffffff, .35, 4,0);
 light.castShadow = true;
 scene.add(light);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, .3); 
+const ambientLight = new THREE.AmbientLight(0xffffff, 3); 
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, .8); 
+const directionalLight = new THREE.DirectionalLight(0xffffff, 3); 
 directionalLight.position.set(0, 1, 0);
 scene.add(directionalLight);
 
@@ -323,6 +351,9 @@ masterTimeline.to(tubePerc, {
                 text.style.transform = 'scale(0.8)';
             }
         });
+        
+        // Update 3D text for dome projection (Scene 1)
+        animate3DTextByPercentage(tubePerc.percent);
     }
 }, 0);
 
@@ -351,45 +382,51 @@ scene.add(sphere);
 
 // Scene 2 timeline
 let scene2Step = 0;
-let totalSteps = 6;
+let totalSteps = 7;
 
 // Create array of camera positions for each Step
 const cameraSteps = [
-    // Step 0: Initial reset position
+    // Step 0: People call you bleeding monster
     {
         x: 0,
         y: -3,
-        z: 30
+        z: 100
     },
-    // Step 1
+    // Step 1: You are death, decaying every month every minute
     {
         x: 30,
         y: 3,
-        z: 100
+        z: 150
     },
-    // Step 2
+    // Step 2: You are life growing every month every minute
     {
-        x: 8,
+        x: 0,
         y: -3,
-        z: 140
+        z: 200
     },
-    // Step 3
+    // Step 3: Now you're back to where you fall from
     {
         x: -30,
         y: 10,
-        z: 90,
+        z: 30,
     },
-    // Step 4
+    // Step 4: You are as immortal as you are alive
     {
       x: -10,
       y: 5,
-      z: 20
+      z: 10
     },
-    // Step 5
+    // Step 5: There is nothing but warm, sticky blackness
     {
-      x: -10,
+      x: 0,
       y: 10,
-      z: -100
+      z: -200
+    },
+    // Step 6: You want to be born
+    {
+      x: 10,
+      y: 10,
+      z: -200
     }
 ];
 
@@ -400,7 +437,8 @@ let scene2texts = [
   document.getElementById('text9'),
   document.getElementById('text10'),
   document.getElementById('text11'),
-  document.getElementById('text12')
+  document.getElementById('text12'),
+  document.getElementById('text13')
 ];
 gsap.set(scene2texts, { opacity: 0, scale: 0.8 })
 
@@ -434,6 +472,9 @@ masterTimeline.to(camera.position, {
               scene2texts[0].style.opacity = 1;
               scene2texts[0].style.transform = 'scale(1)';
               scene2texts[0].style.transition = 'all .5s ease-in-out';
+              
+              // Show 3D text for Scene 2 step 0 (text7)
+              animate3DTextByStep(0);
             }, 0);  
 
               // WheelAdaptor
@@ -462,8 +503,8 @@ masterTimeline.to(camera.position, {
                     });
                 }
 
-                // delay the buttons to fade in in last step
-                if (scene2Step === 5) {
+                // delay the buttons to fade in in last step (step 6 = text13)
+                if (scene2Step === 6) {
                   setTimeout(() => {
                     buttons.forEach(button => {
                       button.style.visibility = 'visible';
@@ -497,6 +538,9 @@ masterTimeline.to(camera.position, {
                   setTimeout(() => {
                         scene2texts[scene2Step].style.opacity = 1;
                         scene2texts[scene2Step].style.transform = 'scale(1)';
+                        
+                        // Update 3D text for dome projection (Scene 2)
+                        animate3DTextByStep(scene2Step);
                       }, 500);
                   },
                   // onComplete: function() {
@@ -627,6 +671,14 @@ createParticleSystem();
 
 //Render =========================================
 function render(){
+  // In dome mode, limit to 30fps for consistent output
+  if (isDomeMode()) {
+    if (!shouldRenderDomeFrame()) {
+      requestAnimationFrame(render);
+      return;
+    }
+  }
+
   if(cameraTargetPercentage < 1) { // Only update during tube section
     currentCameraPercentage = cameraTargetPercentage;
     camera.rotation.y += (cameraRotationProxyX - camera.rotation.y) / 15;
@@ -651,6 +703,9 @@ function render(){
       particleSystem3.rotation.z += 0.0001;
   }
   
+    // Update 3D text positions to follow camera (for dome projection)
+    update3DTextPositions(camera);
+
   // // debugging sphere position and camera position
   // if (sphere) {
   //     if (Math.random() < 0.01) {
@@ -662,9 +717,19 @@ function render(){
   //     }
   // }
   
-  //Render the scene
-  //renderer.render(scene, camera);
-  composer.render();
+  // Render the scene
+  if (isDomeMode()) {
+    // Dome projection rendering (note: bloom effect is bypassed in dome mode)
+    renderDome();
+    
+    // Capture frame for image sequence if recording
+    if (isImageSequenceMode()) {
+      captureImageSequenceFrame();
+    }
+  } else {
+    // Standard rendering with bloom effect
+    composer.render();
+  }
 
   requestAnimationFrame(render);
 }
@@ -692,15 +757,19 @@ window.addEventListener( 'resize', function () {
   renderer.setSize( width, height );
   composer.setSize( width, height );
   
+  // Update dome projection camera
+  onDomeWindowResize();
+  
 }, false );
 
-//Mouse movement to control camera rotation =========================================
-document.addEventListener('mousemove', function(evt) {
-  cameraRotationProxyX = Mathutils.map(evt.clientX, 0, window.innerWidth, 3.24, 3.04);
-  cameraRotationProxyY = Mathutils.map(evt.clientY, 0, window.innerHeight, -.1, .1);
-});
+// Mouse movement to control camera rotation ------------------------------
+// Disabled for stable dome projection - camera stays centered in tube
+// document.addEventListener('mousemove', function(evt) {
+//   cameraRotationProxyX = Mathutils.map(evt.clientX, 0, window.innerWidth, 3.24, 3.04);
+//   cameraRotationProxyY = Mathutils.map(evt.clientY, 0, window.innerHeight, -.1, .1);
+// });
 
-// // Create coordinates helper =========================================
+// // Create coordinates helper ---------------------------------
 // const axesHelper = new THREE.AxesHelper(500); // size 500
 // scene.add(axesHelper);
 

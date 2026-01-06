@@ -40,7 +40,7 @@ html, body {
 
 /* text elements */
 .text-container {
-  z-index: 1000;
+  z-index: 9999;
   width: 99vw;
   height: 99vh;
   position: fixed;

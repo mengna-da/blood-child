@@ -214,9 +214,37 @@ function setupDomeKeyboardControls() {
                     // Set canvas to 1:1 aspect ratio (square)
                     const size = Math.min(window.innerWidth, window.innerHeight);
                     mainRenderer.setSize(size, size);
-                    mainRenderer.domElement.style.position = 'absolute';
+                    mainRenderer.domElement.style.position = 'fixed';
                     mainRenderer.domElement.style.left = ((window.innerWidth - size) / 2) + 'px';
                     mainRenderer.domElement.style.top = ((window.innerHeight - size) / 2) + 'px';
+                    mainRenderer.domElement.style.zIndex = '9999';
+                    
+                    // Hide scrollbars
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                    
+                    // Add black background behind canvas
+                    if (!document.getElementById('dome-fullscreen-bg')) {
+                        const bg = document.createElement('div');
+                        bg.id = 'dome-fullscreen-bg';
+                        bg.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9998;';
+                        document.body.appendChild(bg);
+                    }
+                    
+                    // Set up wheel handler that clamps scroll to page bounds
+                    if (!window._domeWheelHandler) {
+                        window._domeWheelHandler = function(e) {
+                            if (fullscreen1to1) {
+                                // Calculate max scroll position
+                                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                                const currentScroll = window.scrollY;
+                                const newScroll = Math.max(0, Math.min(maxScroll, currentScroll + e.deltaY));
+                                window.scrollTo(0, newScroll);
+                            }
+                        };
+                        window.addEventListener('wheel', window._domeWheelHandler, { passive: true });
+                    }
+                    
                     console.log('1:1 aspect ratio mode: ON (' + size + 'x' + size + ')');
                 } else {
                     // Reset to normal window size
@@ -224,6 +252,16 @@ function setupDomeKeyboardControls() {
                     mainRenderer.domElement.style.position = '';
                     mainRenderer.domElement.style.left = '';
                     mainRenderer.domElement.style.top = '';
+                    mainRenderer.domElement.style.zIndex = '';
+                    
+                    // Restore scrollbars
+                    document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
+                    
+                    // Remove black background
+                    const bg = document.getElementById('dome-fullscreen-bg');
+                    if (bg) bg.remove();
+                    
                     console.log('1:1 aspect ratio mode: OFF');
                 }
             } else {
@@ -274,8 +312,12 @@ export function shouldRenderDomeFrame() {
 export function renderDome() {
     if (!cubeCamera) return;
     
-    // Position cube camera at the main camera's position
-    cubeCamera.position.copy(mainCamera.position);
+    // Position cube camera at the main camera's WORLD position
+    // This is important when camera is nested inside a group (like in unborn)
+    mainCamera.getWorldPosition(cubeCamera.position);
+    
+    // Also copy the camera's world quaternion for proper orientation
+    mainCamera.getWorldQuaternion(cubeCamera.quaternion);
     
     // Capture the scene into cubemap
     cubeCamera.update(mainRenderer, mainScene);
@@ -319,8 +361,9 @@ export function renderDomeFrameHighRes() {
     // Set renderer to high resolution
     mainRenderer.setSize(DOME_OUTPUT_RESOLUTION, DOME_OUTPUT_RESOLUTION);
 
-    // Update cube camera
-    cubeCamera.position.copy(mainCamera.position);
+    // Update cube camera with world position
+    mainCamera.getWorldPosition(cubeCamera.position);
+    mainCamera.getWorldQuaternion(cubeCamera.quaternion);
     cubeCamera.update(mainRenderer, mainScene);
 
     // Render to the high-res render target
@@ -356,8 +399,9 @@ export function exportDomeFrame() {
     // Set to high resolution
     mainRenderer.setSize(DOME_OUTPUT_RESOLUTION, DOME_OUTPUT_RESOLUTION);
 
-    // Update and render
-    cubeCamera.position.copy(mainCamera.position);
+    // Update and render with world position
+    mainCamera.getWorldPosition(cubeCamera.position);
+    mainCamera.getWorldQuaternion(cubeCamera.quaternion);
     cubeCamera.update(mainRenderer, mainScene);
     mainRenderer.render(fisheyeScene, fisheyeCamera);
 
