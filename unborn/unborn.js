@@ -158,14 +158,13 @@ path.tension = .5;
 var geometry = new THREE.TubeGeometry( path, 300, 5, 32, false );
 
 //create image texture
-// var texture = new THREE.TextureLoader().load( '../media/organic-tunnel.jpeg', function ( texture ) {
-var texture = new THREE.TextureLoader().load( '/media/organic-tunnel.jpeg', function ( texture ) { //update media paths for vercel
+var texture = new THREE.TextureLoader().load( '/media/tube-texture-tileable.jpg', function ( texture ){
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.offset.set(0, 0);
     texture.repeat.set(3, 1);
 });
 
-var bloodtexture = new THREE.TextureLoader().load( '/media/blood-texture.jpeg', function ( texture ) {
+var bloodtexture = new THREE.TextureLoader().load( '/media/blood-texture-tileable.jpg', function ( texture ) {
   bloodtexture.wrapS = bloodtexture.wrapT = THREE.RepeatWrapping;
   bloodtexture.offset.set(0, 0);
   bloodtexture.repeat.set(2, 1);
