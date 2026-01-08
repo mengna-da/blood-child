@@ -218,8 +218,9 @@ export function exportSingleFrame() {
     // Set to high resolution
     mainRenderer.setSize(DOME_OUTPUT_RESOLUTION, DOME_OUTPUT_RESOLUTION);
     
-    // Render one frame
-    cubeCamera.position.copy(mainCamera.position);
+    // Render one frame - use world position/rotation for cameras nested in groups
+    mainCamera.getWorldPosition(cubeCamera.position);
+    mainCamera.getWorldQuaternion(cubeCamera.quaternion);
     cubeCamera.update(mainRenderer, mainScene);
     mainRenderer.render(fisheyeScene, fisheyeCamera);
     

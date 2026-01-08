@@ -44,32 +44,34 @@ export const TEXT_3D_CONTENT = {
     // ========== SCENE 1: TUBE TRAVEL (text1-text6) ==========
     // Note: Camera far plane is 200, tube radius is 5, so keep distance small (3-10)
     text1: [
-        { text: "You go back into your unbirth", angle: 70, distance:5, scale: .04 },
-        { text: "You go back into your unbirth", angle: -70, flip: true, distance:5, scale: .04 }
+        { text: "You go back into your unbirth", angle: 5, distance:5, scale: .2 },
+        // { text: "You go back into your unbirth", angle: -80, flip: true, distance:5, scale: .06 }
     ],
     text2: [
-        { text: "Go back at the same speed as you were", angle: 70, distance:5, scale: .04 },
-        { text: "released from the body that was once your home", angle: -70, flip: true, distance:5, scale: .04 },
+        { text: "Go back at the same speed as you were", angle: 75, distance:5, scale: .06 },
+        { text: "released from the body that was once your home", angle: 80, distance:5, scale: .06},
+        { text: "Go back at the same speed as you were", angle: -75, flip: true, distance:5, scale: .06 },
+        { text: "released from the body that was once your homer", angle: -80, flip: true, distance:5, scale: .06 },
     ],
     text3: [
-        { text: "You are hugged by incredible warmth", angle: 65, distance:5, scale: .04 },
-        { text: "Sticky softness that nothing can penetrate", angle: 70, distance:5, scale: .04 },
-        { text: "You are hugged by incredible warmth", angle: -65, flip: true, distance:5, scale: .04 },
-        { text: "Sticky softness that nothing can penetrate", angle: -70, flip: true, distance:5, scale: .04 }
+        { text: "You are hugged by incredible warmth", angle: 80, distance:5, scale: .06, flip: true },
+        { text: "You are hugged by incredible warmth", angle: -80, flip: true, distance:5, scale: .06 },
+        {text: "Sticky softness that nothing can penetrate", angle: 5, distance:5, scale: .2},
+        // { text: "Sticky softness that nothing can penetrate", angle: -80, flip: true, distance:5, scale: .06 }
     ],
     text4: [
-        { text: "You were once part of the warmth", angle: 10, distance:5, scale: .15 },
-        { text: "You were once part of the warmth", angle: -10, flip: true, distance:5, scale: .15 }
+        { text: "You were once part of the warmth", angle: 80, distance:5, scale: .06 },    
+        { text: "You were once part of the warmth", angle: -80, flip: true, distance:5, scale: .06}
     ],
     text5: [
-        { text: "You were once the bed of lining", angle: 65, distance:5, scale: .04 },
-        { text: "where new lives land", angle: 70, distance:5, scale: .04 },
-        { text: "You were once the bed of lining", angle: -65, flip: true, distance:5, scale: .04 },
-        { text: "where new lives land", angle: -70, flip: true, distance:5, scale: .04 }
+        { text: "You were once the bed of lining", angle: 75, distance:5, scale: .06 },
+        { text: "where new lives land", angle: 80, distance:5, scale: .06 },
+        { text: "You were once the bed of lining", angle: -75, flip: true, distance:5, scale: .06 },
+        { text: "where new lives land", angle: -80, flip: true, distance:5, scale: .06 }
     ],
     text6: [
-        { text: "It feels nostalgic", angle: 10, scale: .2, distance: 5 },
-        { text: "It feels nostalgic", angle: -10, scale: .2, flip: true, distance: 5 }
+        { text: "It feels nostalgic", angle: 5, scale: .2, distance: 5 },
+        // { text: "It feels nostalgic", angle: -5, scale: .2, flip: true, distance: 5 }
     ],
     
     // ========== SCENE 2: SPHERE EXPLORATION (text7-text13) ==========
@@ -77,15 +79,19 @@ export const TEXT_3D_CONTENT = {
     text7: [
         { text: "People call you bleeding monster", angle: 65, flip: true, distance: 110},
         { text: "but you know you are the fallen angel", angle: 70, flip: true, distance: 110 },
-        { text: "falling from the paradise that is supposed to birth all", angle: -70, flip: true, distance: 110 }
+        { text: "falling from the paradise that is supposed to birth all", angle: -70, flip: true, distance: 110 },
+        {text: "bleeding monster", angle: 5, distance:5, scale: .2},
+        {text: "the fallen angel", angle: 15, distance:5, scale: .2},
     ],
     text8: [
         { text: "You are death, decaying every month every minute", angle: 70, flip: true, distance: 110 },
-        { text: "You are death, decaying every month every minute", angle: -70, flip: true, distance: 110 }
+        { text: "You are death, decaying every month every minute", angle: -70, flip: true, distance: 110 },
+        {text: "You are death", angle: 5, distance:5, scale: .2},
     ],
     text9: [
         { text: "You are life growing every month every minute", angle: 70, flip: true, distance: 110 },
-        { text: "You are life growing every month every minute", angle: -70, flip: true, distance: 110 }
+        { text: "You are life growing every month every minute", angle: -70, flip: true, distance: 110 },
+        {text: "You are life", angle: 5, distance:5, scale: .2},
     ],
     text10: [
         { text: "Now you're back to where you fall from", angle: 65, distance: 110 },
@@ -94,18 +100,20 @@ export const TEXT_3D_CONTENT = {
         { text: "you become unborn undead nonexistent", angle: -70, flip: true, distance: 110 },
     ],
     text11: [
-        { text: "You are as immortal as you are mortal", angle: 65, distance: 110 },
-        { text: "as alive as you are dead", angle: 70, distance: 110 },
-        { text: "You are as immortal as you are mortal", angle: -65, flip: true, distance: 110 },
-        { text: "as alive as you are dead", angle: -70, flip: true, distance: 110 }
+        // { text: "You are as immortal as you are mortal", angle: 65, distance: 110 },
+        // { text: "as alive as you are dead", angle: 70, distance: 110 },
+        // { text: "You are as immortal as you are mortal", angle: -65, flip: true, distance: 110 },
+        // { text: "as alive as you are dead", angle: -70, flip: true, distance: 110 },
+        {text: "You are as immortal as you are mortal", angle: 5, distance:5, scale: .2},
+        {text: "as alive as you are dead", angle: 15, distance:5, scale: .2},
     ],
     text12: [
         { text: "There is nothing but warm, sticky blackness", angle: 70, distance: 110 },
         { text: "There is nothing but warm, sticky blackness", angle: -70, flip: true, distance: 110 }
     ],
     text13: [
-        { text: "You want to be born", angle: 10, scale: 2, distance: 30 },
-        { text: "You want to be born", angle: -10, scale: 2, flip: true, distance: 30 }
+        { text: "You want to be born", angle: 5, scale: 2, distance: 30 },
+        // { text: "You want to be born", angle: -5, scale: 2, flip: true, distance: 30 }
     ]
 };
 
@@ -161,7 +169,46 @@ function createTextTexture(text, fontSize = 64, fontFamily = 'Balthazar, Georgia
     context.textBaseline = 'middle';
     
     // Draw text at center
-    context.fillText(text, canvas.width / 2, canvas.height / 2);
+    // context.fillText(text, canvas.width / 2, canvas.height / 2);
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    // Layer 1: Outer glow (soft silver halo)
+    context.shadowColor = 'rgba(255, 239, 239, 0.6)';
+    context.shadowBlur = 40;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.fillStyle = 'rgba(242, 242, 242, 0.3)';
+    context.fillText(text, centerX, centerY);
+    
+    // Layer 2: Inner glow (brighter silver)
+    context.shadowColor = 'rgb(239, 235, 6)';
+    context.shadowBlur = 15;
+    context.fillStyle = 'rgba(242, 241, 241, 0.5)';
+    context.fillText(text, centerX, centerY);
+    
+    // Layer 3: Core text with metallic gradient
+    context.shadowColor = 'rgba(255, 255, 255, 1)';
+    context.shadowBlur = 5;
+    
+    // Create metallic silver gradient
+    const gradient = context.createLinearGradient(
+        centerX - metrics.width / 2, centerY - fontSize / 2,
+        centerX + metrics.width / 2, centerY + fontSize / 2
+    );
+    gradient.addColorStop(0, '#e8e8e8');    // Light silver
+    gradient.addColorStop(0.3, '#ffffff');   // Bright highlight
+    gradient.addColorStop(0.5, '#d0d0d0');   // Mid silver
+    gradient.addColorStop(0.7, '#ffffff');   // Another highlight
+    // gradient.addColorStop(1, '#c8c8c8');     // Darker silver edge
+    
+    context.fillStyle = gradient;
+    context.fillText(text, centerX, centerY);
+    
+    // Layer 4: Subtle top highlight for 3D metallic effect
+    context.shadowBlur = 0;
+    context.fillStyle = 'rgba(255, 255, 255, 0.69)';
+    context.fillText(text, centerX, centerY - 1);
     
     // Create texture
     const texture = new THREE.CanvasTexture(canvas);
@@ -205,14 +252,32 @@ function createDomeTextMesh(text, angle, rotation = 0, distance = 5, scale = 1, 
     const planeWidth = planeHeight * aspectRatio;
     
     const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
-    const material = new THREE.MeshBasicMaterial({
+    // Metallic yellow material with emissive glow
+    const material = new THREE.MeshStandardMaterial({
         map: texture,
         transparent: true,
         side: THREE.DoubleSide,
         depthWrite: false,
         depthTest: true,
-        opacity: 0
+        opacity: 0,
+        metalness: 1,
+        roughness: 0.2,
+        // Silvery emissive glow
+        emissive: new THREE.Color(0xffff00), //yellow
+        emissiveIntensity: 0.9,
+        emissiveMap: texture,
+        // Base color tint (silver)
+        color: new THREE.Color(0xfdfdfd)
     });
+
+    // const material = new THREE.MeshBasicMaterial({
+    //     map: texture,
+    //     transparent: true,
+    //     side: THREE.DoubleSide,
+    //     depthWrite: false,
+    //     depthTest: true,
+    //     opacity: 0
+    // });
     
     const mesh = new THREE.Mesh(geometry, material);
     

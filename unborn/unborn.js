@@ -155,7 +155,7 @@ var path = new THREE.CatmullRomCurve3(points);
 path.tension = .5;
 
 //create a new tube geometry with a different radius
-var geometry = new THREE.TubeGeometry( path, 300, 5, 32, false );
+var geometry = new THREE.TubeGeometry( path, 300, 10, 32, false );
 
 //create image texture
 var texture = new THREE.TextureLoader().load( '/media/tube-texture-tileable.jpg', function ( texture ){
@@ -405,27 +405,27 @@ const cameraSteps = [
     },
     // Step 3: Now you're back to where you fall from
     {
-        x: -30,
+        x: -80,
         y: 10,
-        z: 30,
+        z: 80
     },
     // Step 4: You are as immortal as you are alive
     {
-      x: -10,
+      x: -20,
       y: 5,
-      z: 10
+      z: 30
     },
     // Step 5: There is nothing but warm, sticky blackness
     {
       x: 0,
       y: 10,
-      z: -200
+      z: -300
     },
     // Step 6: You want to be born
     {
       x: 10,
       y: 10,
-      z: -200
+      z: -300
     }
 ];
 
